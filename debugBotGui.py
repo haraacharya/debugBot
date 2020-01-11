@@ -1,5 +1,6 @@
 from tkinter import *
 import time
+from debugBot import bot
 from tkinter import messagebox as msgbox
 import threading
 
@@ -9,7 +10,7 @@ class ChatWindowInterface(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
-        self.window_bg = "#FFFFFFFF"
+        self.window_bg = "#FFFFFFF8"
         self.window_fg = "#00000000"
         self.font = "Verdana 12"
         menu = Menu(self.master)
@@ -53,13 +54,6 @@ class ChatWindowInterface(Frame):
         self.master.bind("<Return>", self.send_input_message)
 
 
-    def clear_screen(self):
-        self.showchatbox.config(state=NORMAL)
-        self.last_sent_label(date="No new messages available.")
-        self.showchatbox.delete(1.0, END)
-        self.showchatbox.delete(1.0, END)
-        self.showchatbox.config(state=DISABLED)
-
     def last_sent_label(self, date):
         try:
             self.sent_label.destroy()
@@ -69,6 +63,13 @@ class ChatWindowInterface(Frame):
         self.sent_label = Label(self.user_input_box, font="Verdana 7", text=date, bg=self.window_bg, fg=self.window_fg)
         self.sent_label.pack(side=LEFT, fill=X, padx=3)
 
+
+    def clear_screen(self):
+        self.showchatbox.config(state=NORMAL)
+        self.last_sent_label(date="No new messages available.")
+        self.showchatbox.delete(1.0, END)
+        self.showchatbox.delete(1.0, END)
+        self.showchatbox.config(state=DISABLED)
 
 
     def exit_chat(self):
@@ -84,8 +85,9 @@ class ChatWindowInterface(Frame):
         self.showchatbox.insert(END, processed_user_input)
         self.showchatbox.configure(state=DISABLED)
         self.showchatbox.see(END)
-        # bot_output=botchat(user_input)
-        bot_output = "test"
+        
+        bot_output=bot(user_input)
+        
         processed_bot_output = "DebugBot : " + bot_output + "\n"
         self.showchatbox.configure(state=NORMAL)
         self.showchatbox.insert(END, processed_bot_output)
